@@ -8,7 +8,7 @@
     <style>
         @font-face {
             font-family: 'Minecraft';
-            src: url('Minecraft.ttf') format('truetype');
+            src: url('assets/Minecraft.ttf') format('truetype');
         }
         body {
             margin: 0;
@@ -83,16 +83,16 @@
    
     <div class="score-board">
         Score&nbsp;<span id="score">0</span>
-        <img src="duck.png" alt="Duck Icon" width="36" height="36">
+        <img src="assets/duck.png" alt="Duck Icon" width="36" height="36">
     </div>
     <canvas id="gameCanvas"></canvas>
 
     <div class="button-bar">
         <button class="quest-button" onclick="window.location.href='quest.html'">
-            <img src="rocket.png" alt="Quest Icon" width="36" height="36"> Quest
+            <img src="assets/rocket.png" alt="Quest Icon" width="36" height="36"> Quest
         </button>
         <button class="earn-button" onclick="window.location.href='earn.html'">
-            <img src="dollar.png" alt="Earn Icon" width="36" height="36"> Earn 
+            <img src="assets/dollar.png" alt="Earn Icon" width="36" height="36"> Earn 
         </button>
     </div>
 
@@ -121,11 +121,11 @@
         const duckHeight = 50;
 
         const netImg = new Image();
-        netImg.src = 'farmer.png';
+        netImg.src = 'assets/farmer.png';
         const duckImg = new Image();
-        duckImg.src = 'duck.png';
+        duckImg.src = 'assets/duck.png';
         const bgImg = new Image();
-        bgImg.src = 'background.png';
+        bgImg.src = 'assets/background.png';
 
         function createDuck() {
             const duckX = Math.random() * (canvas.width - duckWidth);
