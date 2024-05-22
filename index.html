@@ -1,31 +1,114 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Catch the Ducks Game</title>
     <style>
+        @font-face {
+            font-family: 'Minecraft';
+            src: url('Minecraft.ttf') format('truetype');
+        }
         body {
             margin: 0;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh;
+            font-family: 'Minecraft', Arial, sans-serif;
         }
         canvas {
             display: block;
+            flex-grow: 1;
+        }
+        .button-bar {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: blue;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+        .button-bar button, .button-bar a {
+            padding: 10px 20px;
+            font-size: 18px;
+            color: white;
+            text-decoration: none;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .button-bar button:hover, .button-bar a:hover {
+            background-color: #45a049;
+        }
+        .quest-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .quest-button img {
+            margin-right: 10px;
+        }
+        .score-board {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: blue;
+            padding: 10px;
+            border-radius: 12px;
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-family: 'Minecraft', Arial, sans-serif;
+        }
+        .score-board img {
+            margin-left: 10px;
         }
     </style>
 </head>
 <body>
+    <div class="score-board">
+        Score: <span id="score">0</span>
+        <img src="duck.png" alt="Duck Icon" width="20" height="20">
+    </div>
     <canvas id="gameCanvas"></canvas>
+
+    <div class="button-bar">
+        <button class="quest-button" onclick="window.location.href='quest.html'">
+            <img src="rocket.png" alt="Quest Icon" width="20" height="20"> Quest
+        </button>
+    </div>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = 300//window.innerWidth;
-        canvas.height = 600//window.innerHeight;
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight - document.querySelector('.button-bar').offsetHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
         let ducks = [];
         let score = 0;
         const netWidth = 100;
         const netHeight = 100;
         let netX = (canvas.width - netWidth) / 2;
-        const netY = canvas.height - netHeight - 10;
+        const netY = canvas.height - netHeight - 60; // Position fermier au-dessus du bandeau
         const duckWidth = 50;
         const duckHeight = 50;
 
@@ -56,6 +139,7 @@
                 ) {
                     ducks.splice(index, 1);
                     score += 1;
+                    document.getElementById('score').textContent = score;
                 }
             });
         }
@@ -66,9 +150,6 @@
                 ctx.drawImage(duckImg, duck.x, duck.y, duckWidth, duckHeight);
             });
             ctx.drawImage(netImg, netX, netY, netWidth, netHeight);
-            ctx.fillStyle = 'black';
-            ctx.font = '36px Arial';
-            ctx.fillText(`Score: ${score}`, 10, 50);
         }
 
         function gameLoop() {
@@ -85,5 +166,8 @@
         setInterval(createDuck, 1000);
         gameLoop();
     </script>
+    <!-- Eruda is console for mobile browsers -->
+    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    <script>eruda.init();</script>
 </body>
 </html>
