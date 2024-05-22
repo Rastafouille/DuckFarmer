@@ -4,11 +4,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Quest</title>
+    <title>Earn</title>
     <style>
         @font-face {
             font-family: 'Minecraft';
             src: url('Minecraft.ttf') format('truetype');
+        }
+        body {
+            font-family: 'Minecraft', Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            padding-top: 50px;
+        }
+        h1 {
+            font-size: 36px;
         }
         body {
             display: flex;
@@ -39,10 +48,23 @@
     </style>
 </head>
 <body>
+    <h1>Earn Ducks</h1>
     <button onclick="window.location.href='index.html'">Go back to catch!</button>
-    <a href="javascript:Telegram.WebApp.openTelegramLink('https://t.me/DuckFarmerBot');">Telegram Bot</a>
-    <a href="javascript:Telegram.WebApp.openLink('http://duckfarmer.ddns.net/');">Site</a>
+    <button id="x2Button">x2 Speed</button>
+    <button id="fatFarmerButton">Fat Farmer</button>
 
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        document.getElementById('x2Button').addEventListener('click', () => {
+            // Function to double the speed
+            speedMultiplier *= 2;
+            console.log('Speed Multiplier:', speedMultiplier);
+        });
+
+        document.getElementById('fatFarmerButton').addEventListener('click', () => {
+            // Function to increase farmer width by 3 times
+            farmerWidthMultiplier *= 3;
+            console.log('Farmer Width Multiplier:', farmerWidthMultiplier);
+        });
+    </script>
 </body>
 </html>

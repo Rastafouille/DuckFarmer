@@ -50,12 +50,12 @@
         .button-bar button:hover, .button-bar a:hover {
             background-color: #45a049;
         }
-        .quest-button {
+        .quest-button, .earn-button {
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .quest-button img {
+        .quest-button img, .earn-button img {
             margin-right: 10px;
         }
         .score-board {
@@ -76,29 +76,11 @@
         .score-board img {
             margin-left: 10px;
         }
-        .fullscreen-message {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            z-index: 10;
-        }
-        .fullscreen-message.hidden {
-            display: none;
-        }
+       
     </style>
 </head>
 <body>
-    <div id="fullscreenMessage" class="fullscreen-message">
-        Tap to enter fullscreen
-    </div>
+   
     <div class="score-board">
         Score: <span id="score">0</span>
         <img src="duck.png" alt="Duck Icon" width="36" height="36">
@@ -107,11 +89,12 @@
 
     <div class="button-bar">
         <button class="quest-button" onclick="window.location.href='quest.html'">
-            <img src="rocket.png" alt="Quest Icon" width="20" height="20"> Quest
+            <img src="rocket.png" alt="Quest Icon" width="36" height="36"> Quest
+        </button>
+        <button class="earn-button" onclick="window.location.href='earn.html'">
+            <img src="rocket.png" alt="Earn Icon" width="36" height="36"> Earn 
         </button>
     </div>
-
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <script>
         const canvas = document.getElementById('gameCanvas');
@@ -127,7 +110,10 @@
 
         let ducks = [];
         let score = 0;
-        const netWidth = 100;
+        let speedMultiplier = 1;
+        let farmerWidthMultiplier = 1;
+
+        const netWidth = 100 * farmerWidthMultiplier;
         const netHeight = 100;
         let netX = (canvas.width - netWidth) / 2;
         const netY = canvas.height - netHeight - document.querySelector('.button-bar').offsetHeight - 10;
@@ -148,7 +134,7 @@
 
         function update() {
             ducks.forEach((duck, index) => {
-                duck.y += 5;
+                duck.y += 5 * speedMultiplier;
                 if (duck.y > canvas.height) {
                     ducks.splice(index, 1);
                 }
@@ -196,19 +182,6 @@
             netX = touch.clientX - netWidth / 2;
         });
 
-        document.getElementById('fullscreenMessage').addEventListener('click', () => {
-            if (canvas.requestFullscreen) {
-                canvas.requestFullscreen();
-            } else if (canvas.mozRequestFullScreen) { /* Firefox */
-                canvas.mozRequestFullScreen();
-            } else if (canvas.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-                canvas.webkitRequestFullscreen();
-            } else if (canvas.msRequestFullscreen) { /* IE/Edge */
-                canvas.msRequestFullscreen();
-            }
-            document.getElementById('fullscreenMessage').classList.add('hidden');
-        });
-
         setInterval(createDuck, 1000);
         gameLoop();
     </script>
@@ -216,4 +189,3 @@
     <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
     <script>eruda.init();</script>
 </body>
-</html>
