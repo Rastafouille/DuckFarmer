@@ -87,7 +87,7 @@
 
     <div class="button-bar">
         <button class="quest-button" onclick="window.location.href='quest.html'">
-            <img src="rocket.png" alt="Quest Icon" width="36" height="36"> Quest
+            <img src="rocket.png" alt="Quest Icon" width="20" height="20"> Quest
         </button>
     </div>
 
@@ -163,6 +163,19 @@
 
         canvas.addEventListener('mousemove', (event) => {
             netX = event.clientX - netWidth / 2;
+        });
+
+        // Handle touch events
+        canvas.addEventListener('touchstart', (event) => {
+            event.preventDefault();
+            const touch = event.touches[0];
+            netX = touch.clientX - netWidth / 2;
+        });
+
+        canvas.addEventListener('touchmove', (event) => {
+            event.preventDefault();
+            const touch = event.touches[0];
+            netX = touch.clientX - netWidth / 2;
         });
 
         setInterval(createDuck, 1000);
