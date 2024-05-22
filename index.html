@@ -37,7 +37,7 @@
         }
         .button-bar button, .button-bar a {
             padding: 10px 20px;
-            font-size: 18px;
+            font-size: 24px; /* Increased font size */
             color: white;
             text-decoration: none;
             background-color: #4CAF50;
@@ -45,6 +45,7 @@
             border-radius: 12px;
             cursor: pointer;
             transition: background-color 0.3s;
+            font-family: 'Minecraft', Arial, sans-serif; /* Applied Minecraft font */
         }
         .button-bar button:hover, .button-bar a:hover {
             background-color: #45a049;
@@ -70,6 +71,7 @@
             transform: translateX(-50%);
             color: white;
             font-family: 'Minecraft', Arial, sans-serif;
+            font-size: 36px; /* Increased font size */
         }
         .score-board img {
             margin-left: 10px;
@@ -79,7 +81,7 @@
 <body>
     <div class="score-board">
         Score: <span id="score">0</span>
-        <img src="duck.png" alt="Duck Icon" width="20" height="20">
+        <img src="duck.png" alt="Duck Icon" width="36" height="36"> <!-- Adjusted size for visibility -->
     </div>
     <canvas id="gameCanvas"></canvas>
 
@@ -108,66 +110,4 @@
         const netWidth = 100;
         const netHeight = 100;
         let netX = (canvas.width - netWidth) / 2;
-        const netY = canvas.height - netHeight - 60; // Position fermier au-dessus du bandeau
-        const duckWidth = 50;
-        const duckHeight = 50;
-
-        // Load images
-        const netImg = new Image();
-        netImg.src = 'farmer.png';
-        const duckImg = new Image();
-        duckImg.src = 'duck.png';
-        const bgImg = new Image();
-        bgImg.src = 'background.png';
-
-        function createDuck() {
-            const duckX = Math.random() * (canvas.width - duckWidth);
-            ducks.push({ x: duckX, y: 0 });
-        }
-
-        function update() {
-            ducks.forEach((duck, index) => {
-                duck.y += 5;
-                if (duck.y > canvas.height) {
-                    ducks.splice(index, 1);
-                }
-                if (
-                    duck.x < netX + netWidth &&
-                    duck.x + duckWidth > netX &&
-                    duck.y < netY + netHeight &&
-                    duck.y + duckHeight > netY
-                ) {
-                    ducks.splice(index, 1);
-                    score += 1;
-                    document.getElementById('score').textContent = score;
-                }
-            });
-        }
-
-        function draw() {
-            ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
-            ducks.forEach(duck => {
-                ctx.drawImage(duckImg, duck.x, duck.y, duckWidth, duckHeight);
-            });
-            ctx.drawImage(netImg, netX, netY, netWidth, netHeight);
-        }
-
-        function gameLoop() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            update();
-            draw();
-            requestAnimationFrame(gameLoop);
-        }
-
-        canvas.addEventListener('mousemove', (event) => {
-            netX = event.clientX - netWidth / 2;
-        });
-
-        setInterval(createDuck, 1000);
-        gameLoop();
-    </script>
-    <!-- Eruda is console for mobile browsers -->
-    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-    <script>eruda.init();</script>
-</body>
-</html>
+        const netY = canvas.height - netHeight - document.querySelector('.button-bar').offsetHeight - 10; // Adjust

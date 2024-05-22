@@ -21,7 +21,7 @@
         }
         button, a {
             padding: 10px 20px;
-            font-size: 18px;
+            font-size: 24px; /* Increased font size */
             margin-bottom: 10px;
             background-color: #4CAF50;
             color: white;
@@ -31,6 +31,7 @@
             text-align: center;
             text-decoration: none;
             transition: background-color 0.3s;
+            font-family: 'Minecraft', Arial, sans-serif; /* Applied Minecraft font */
         }
         button:hover, a:hover {
             background-color: #45a049;
@@ -38,8 +39,10 @@
     </style>
 </head>
 <body>
-    <button onclick="window.location.href='index.html'">Go to Play !</button>
+    <button onclick="window.location.href='index.html'">Go to play!</button>
     <a href="javascript:Telegram.WebApp.openTelegramLink('https://t.me/DuckFarmerBot');">Telegram Bot</a>
     <a href="javascript:Telegram.WebApp.openLink('http://duckfarmer.ddns.net/');">Site</a>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </body>
 </html>
