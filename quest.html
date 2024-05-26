@@ -22,7 +22,7 @@
         }
         button, a {
             padding: 10px 20px;
-            font-size: 24px; /* Increased font size */
+            font-size: 24px;
             margin-bottom: 10px;
             background-color: #4CAF50;
             color: white;
@@ -32,7 +32,7 @@
             text-align: center;
             text-decoration: none;
             transition: background-color 0.3s;
-            font-family: 'Minecraft', Arial, sans-serif; /* Applied Minecraft font */
+            font-family: 'Minecraft', Arial, sans-serif;
         }
         h1 {
             font-size: 36px;
@@ -49,8 +49,14 @@
     <a href="javascript:Telegram.WebApp.openLink('http://duckfarmer.ddns.net/');">Site</a>
     <a href="javascript:Telegram.WebApp.openLink('http://duckfarmer.ddns.net/');">X</a>
     <button onclick="window.location.href='index.html'">Go back to catch!</button>
-
+    <button onclick="loginWithTwitter()">Login with Twitter</button>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        function loginWithTwitter() {
+            // Replace 'YOUR_TWITTER_AUTH_URL' with the actual URL to start Twitter OAuth process
+            window.location.href = 'YOUR_TWITTER_AUTH_URL';
+        }
+    </script>
 </body>
 </html>
