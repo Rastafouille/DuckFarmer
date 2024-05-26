@@ -190,9 +190,6 @@
             const touch = event.touches[0];
             netX = touch.clientX - netWidth / 2;
         });
-        connectToTelegramWallet();
-        setInterval(createDuck, 1000);
-        gameLoop();
 
         function getUrlParams() {
             const params = {};
@@ -217,6 +214,10 @@
                 console.error('Telegram WebApp API is not available.');
             }
         }
+
+        connectToTelegramWallet();
+        setInterval(createDuck, 1000);
+        gameLoop();
     </script>
    
 </body>
