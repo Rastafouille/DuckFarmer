@@ -86,7 +86,7 @@
        
     </style>
 </head>
-<body onload="connectToTelegramWallet()">
+<body>
    
     <div class="score-board">
         <div> <span id="username">Guest</span></div>
@@ -190,7 +190,7 @@
             const touch = event.touches[0];
             netX = touch.clientX - netWidth / 2;
         });
-
+        connectToTelegramWallet();
         setInterval(createDuck, 1000);
         gameLoop();
 
