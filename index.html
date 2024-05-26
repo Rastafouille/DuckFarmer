@@ -215,7 +215,13 @@
             }
         }
 
-        connectToTelegramWallet();
+        document.addEventListener('DOMContentLoaded', function() {
+        if (typeof Telegram !== 'undefined' && Telegram !== null) {
+            Telegram.Wallet.show();
+        } else {
+            console.error('Telegram WebApp API is not available.');
+        }
+        });
         setInterval(createDuck, 1000);
         gameLoop();
     </script>
