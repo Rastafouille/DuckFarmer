@@ -76,6 +76,11 @@
         .score-board img {
             margin-left: 10px;
         }
+        .telegram-login {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+        }
        
     </style>
 </head>
@@ -95,7 +100,7 @@
             <img src="assets/dollar.png" alt="Earn Icon" width="36" height="36"> Earn 
         </button>
     </div>
-
+    <script src="https://telegram.org/js/telegram-web-app.js"></script> 
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
@@ -184,6 +189,24 @@
 
         setInterval(createDuck, 1000);
         gameLoop();
+
+        function getUrlParams() {
+            const params = {};
+            const queryString = window.location.search.substring(1);
+            const regex = /([^&=]+)=([^&]*)/g;
+            let m;
+            while (m = regex.exec(queryString)) {
+                params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+            }
+            return params;
+        }
+
+        // Get the Telegram WebApp user
+        const telegram = window.Telegram.WebApp;
+        if (telegram.initDataUnsafe && telegram.initDataUnsafe.user) {
+            const user = telegram.initDataUnsafe.user;
+            document.getElementById('username').textContent = user.username || user.first_name || 'Guest';
+        }
     </script>
    
 </body>
