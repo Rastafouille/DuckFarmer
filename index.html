@@ -50,12 +50,12 @@
         .button-bar button:hover, .button-bar a:hover {
             background-color: #45a049;
         }
-        .quest-button, .earn-button {
+        .quest-button, .boost-button {
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .quest-button img, .earn-button img {
+        .quest-button img, .boost-button img {
             margin-right: 10px;
         }
         .score-board {
@@ -97,11 +97,17 @@
         <button class="quest-button" onclick="window.location.href='quest.html'">
             <img src="assets/rocket.png" alt="Quest Icon" width="36" height="36"> Quest
         </button>
-        <button class="earn-button" onclick="window.location.href='earn.html'">
-            <img src="assets/dollar.png" alt="Earn Icon" width="36" height="36"> Earn 
+        <button class="boost-button" onclick="window.location.href='boost.html'">
+            <img src="assets/dollar.png" alt="Boost Icon" width="36" height="36"> Boost 
         </button>
     </div>
+
     <script src="https://telegram.org/js/telegram-web-app.js"></script> 
+    <!--<script src="common.js"></script>-->
+    
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+    <script>eruda.init()</script>
+
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
@@ -115,19 +121,23 @@
         resizeCanvas();
         let ducks = [];
         let score = 0; // Initialiser le score à 0
-        let telegramID = "0";
+        let telegramID = "Guest";
         let speedBoost = 1;
-        let farmerWidthMultiplier = 1;
+        let fatBoost = 1;
+        let tg = 0;
+        let twitter = 0;
+        let site = 0;
 
-        const netWidth = 100 * farmerWidthMultiplier;
-        const netHeight = 100;
-        let netX = (canvas.width - netWidth) / 2;
-        const netY = canvas.height - netHeight - document.querySelector('.button-bar').offsetHeight - 10;
+
+        let FarmerWidth = 100 * fatBoost;
+        let FarmerHeight = 100 * fatBoost;
+        let FarmerX = (canvas.width - FarmerWidth) / 2;
+        let FarmerY = canvas.height - FarmerHeight - document.querySelector('.button-bar').offsetHeight - 10;
         const duckWidth = 50;
         const duckHeight = 50;
 
-        const netImg = new Image();
-        netImg.src = 'assets/farmer.png';
+        const FarmerImg = new Image();
+        FarmerImg.src = 'assets/farmer.png';
         const duckImg = new Image();
         duckImg.src = 'assets/duck.png';
         const bgImg = new Image();
@@ -135,8 +145,6 @@
         
         let gameRunning = true; // Variable pour vérifier si le jeu est en cours
         let animationFrameId; // ID de l'animation frame pour pouvoir l'annuler
-
-
 
         // Gérer la visibilité de la page
         document.addEventListener('visibilitychange', function() {
@@ -147,8 +155,6 @@
             }
         });
         
-        
-
         function createDuck() {
             if (gameRunning == true) {
                 const duckX = Math.random() * (canvas.width - duckWidth);
@@ -156,21 +162,25 @@
         }
 
         function update() {
+            
+            FarmerWidth = 100 * fatBoost;
+            FarmerHeight = 50+50* fatBoost;
+
             ducks.forEach((duck, index) => {
                 duck.y += 5*speedBoost;
                 if (duck.y > canvas.height) {
                     ducks.splice(index, 1);
                 }
                 if (
-                    duck.x < netX + netWidth &&
-                    duck.x + duckWidth > netX &&
-                    duck.y < netY + netHeight &&
-                    duck.y + duckHeight > netY
+                    duck.x < FarmerX + FarmerWidth &&
+                    duck.x + duckWidth > FarmerX &&
+                    duck.y < FarmerY + FarmerHeight &&
+                    duck.y + duckHeight > FarmerY
                 ) {
                     ducks.splice(index, 1);
                     score += 1;
                     document.getElementById('score').textContent = score;
-                    setScore(telegramID, score);
+                    setData();
                 }
             });
         }
@@ -180,112 +190,117 @@
             ducks.forEach(duck => {
                 ctx.drawImage(duckImg, duck.x, duck.y, duckWidth, duckHeight);
             });
-            ctx.drawImage(netImg, netX, netY, netWidth, netHeight);
+            ctx.drawImage(FarmerImg, FarmerX, FarmerY, FarmerWidth, FarmerHeight);
         }
 
-            
         function gameLoop() {
             if (gameRunning == true) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             update();
             draw();}
-            //setScore(telegramID, score);
             requestAnimationFrame(gameLoop);
         }
 
         canvas.addEventListener('mousemove', (event) => {
-            netX = event.clientX - netWidth / 2;
+            FarmerX = event.clientX - FarmerWidth / 2;
         });
 
         canvas.addEventListener('touchstart', (event) => {
             event.preventDefault();
             const touch = event.touches[0];
-            netX = touch.clientX - netWidth / 2;
+            FarmerX = touch.clientX - FarmerWidth / 2;
         });
 
         canvas.addEventListener('touchmove', (event) => {
             event.preventDefault();
             const touch = event.touches[0];
-            netX = touch.clientX - netWidth / 2;
+            FarmerX = touch.clientX - FarmerWidth / 2;
         });
-        // Fonction pour envoyer l'ID Telegram au backend via AJAX
-            function getScore(id) {
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "get_score.php", true);
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhr.onreadystatechange = function() {
-                    //alert("getScore" + id);
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        var response = JSON.parse(xhr.responseText);
-                        if (response.status === 'success' || response.status === 'added') {
-                            score = parseInt(response.score, 10); // Convertir le score en entier
-                            speedBoost=parseInt(response.speed_boost, 10);
-                                    setInterval(createDuck,parseInt(1000/speedBoost,10));
+      
+      
+      
+// Fonction pour envoyer l'ID Telegram au backend via AJAX
+function getData(telegramID) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "get_data.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var response = JSON.parse(xhr.responseText);
+            if (response.status === 'success' || response.status === 'added') {
+                    score = response.score;
+                    speedBoost=response.speed_boost;
+                    fatBoost=response.fat_boost;
+                    tg=response.telegram;
+                    twitter=response.twitter;
+                    site=response.site;
+                    document.getElementById('score').textContent = score;
+                    document.getElementById('username').textContent = telegramID;
+                    setInterval(createDuck,parseInt(1000/speedBoost,10));
+                    alert (score +' '+speedBoost+' '+fatBoost+' '+tg+' '+twitter+' '+site);
+            } else {
+                c("Erreur: " + response.message);
+                //callback(0, 1, 1, 0, 0, 0);
+           }
+        } else if (xhr.readyState == 4) {
+            console.log("Erreur lors de la requête AJAX: " + xhr.status);
+            //callback(0, 1, 1, 0, 0, 0);
+        }
+    };
+    xhr.send("telegramID=" + encodeURIComponent(telegramID));
+}
 
-                            document.getElementById('score').textContent = score; // Mettre à jour l'affichage du score
-                            //alert("speed_boost recu " + telegramID +" / "+ speedBoost);
-                        } else {
-                            score = 0;
-                            document.getElementById('score').textContent = score;
-                           //alert("score recu3 " +telegramID +" / "+ score);
-                        }
-                    }
-                };
-                xhr.send("telegramID=" + encodeURIComponent(id));
-            }
-       // Fonction pour envoyer le score au backend via AJAX
-        function setScore(id, score) {
-                //alert("setScore " + id + " / "+score);
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "set_score.php", true);
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        var response = JSON.parse(xhr.responseText);
-                        if (response.status === 'success') {
-                            console.log("Score mis à jour avec succès: " + score); // Journal pour déboguer
-                        } else {
-                            console.log("Erreur d'écriture: " + response.message);
-                        }
-                    }
-                }
-                xhr.send("telegramID=" + encodeURIComponent(id) + "&score=" + encodeURIComponent(score));
-            }
-
-        
-       // function connectToTelegramWallet() {
-        //    if (typeof Telegram !== 'undefined' && Telegram !== null) {
-         //       Telegram.Wallet.show();
-        //    } else {
-       //         console.error('Telegram WebApp API is not available.');
-       //     }
-      //  }
-
-
+// Fonction pour mettre à jour les données dans la base de données via AJAX
+function setData() {
+   // telegramID = telegramID || '';
+   // score = score || 0;
+    //speedBoost = speedBoost || 1;
+    //fatBoost = fatBoost || 1;
+   // tg = tg || '0';
+   // twitter = twitter || '0';
+   // site = site || '0';
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "set_data.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var response = JSON.parse(xhr.responseText);
+            if (response.status === 'success') {    }
+        }
+    };
+    xhr.send(
+    "telegramID=" + encodeURIComponent(telegramID) + 
+    "&score=" + encodeURIComponent(score) + 
+    "&speedBoost=" + encodeURIComponent(speedBoost) + 
+    "&fatBoost=" + encodeURIComponent(fatBoost) + 
+    "&tg=" + encodeURIComponent(tg) + 
+    "&twitter=" + encodeURIComponent(twitter) + 
+    "&site=" + encodeURIComponent(site)
+);
+}
+      
+        document.addEventListener('DOMContentLoaded', function(){
             // Vérifier si l'API Telegram Web App est disponible
             if (typeof Telegram !== 'undefined' && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
-                // Vérifier si l'utilisateur est disponible dans initDataUnsafe
                 var user = Telegram.WebApp.initDataUnsafe.user;
                 if (user) {
-                    // Obtenir l'ID utilisateur Telegram ou le nom d'utilisateur
                     telegramID = user.username ? user.username : user.id;
-                    //alert("user recup :" + telegramID);
-                    getScore(telegramID);
-                    document.getElementById('username').textContent = telegramID;
-                    //alert("score recu " + telegramID +" / "+ score);
-                } else {
-                    telegramID = 'Guest';
-                    score = 0;
-                    document.getElementById('username').textContent = telegramID;
+                    alert ('telegram User: '+telegramID);
+                    getData(telegramID);
+                    }
+                 else {
+                    setInterval(createDuck,parseInt(1000/speedBoost,10));
                 }
             } else {
-                document.getElementById("result").innerHTML = "API Telegram Web App non disponible.";
+                document.getElementById("username").textContent = "API Telegram Web App non disponible.";
             }
-        
+        })
+            
+
         window.addEventListener("beforeunload", function(event) {
                 alert("beforeunload ");
                 if (telegramID !== 'Guest') {
-                    setScore(telegramID, score); // Mettre à jour le score à la fermeture de la page
+                    setData(); // Mettre à jour le score à la fermeture de la page
                 }
             });
 
@@ -293,7 +308,6 @@
             Telegram.WebApp.ready();
             Telegram.WebApp.expand(); // Request maximum available height
         }
-        setInterval(createDuck,parseInt(1000/speedBoost,10));
         gameLoop();
     </script>
 </body>

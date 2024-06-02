@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Quest</title>
+    <title>Boost</title>
     <style>
         @font-face {
             font-family: 'Minecraft';
@@ -45,7 +45,7 @@
         .score-board .score-line img {
             margin-left: 10px;
         }
-         a {
+        button {
             padding: 10px 20px;
             font-size: 24px;
             margin-bottom: 10px;
@@ -59,36 +59,19 @@
             transition: background-color 0.3s;
             font-family: 'Minecraft', Arial, sans-serif;
         }
-         button {
-            padding: 10px 20px;
-            font-size: 24px;
-            margin-bottom: 10px;
-            background-color: #45a049;
-            color: white;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            transition: background-color 0.3s;
-            font-family: 'Minecraft', Arial, sans-serif;
-        }
-        
         .go-back-button {
             position: absolute;
             bottom: 20px;
             background-color: #45a049;
         }
-        
-         a span.new-line {
-            display: block;
-        }
         h1 {
             font-size: 36px;
             color: white;
+            text-decoration: underline;
         }
-        button:hover, a:hover {
-            background-color: #45a049;
+        span.new-line {
+            display: block;
+            font-size: 12px;
         }
     </style>
 </head>
@@ -99,27 +82,24 @@
             <img src="assets/duck.png" alt="Duck Icon" width="36" height="36">
         </div>
     </div>
-    <h1>Quest</h1>
-    <a href="javascript:joinCommunity()" id="joinCommunityLink">Join telegram community <span class="new-line">+1000$</span></a>
-    <a href="javascript:joinX()" id="joinXLink">Join X community +1000$</a>
-    <a href="javascript:visitSite()" id="visitSiteLink">Visit our Site +1000$</a>
-
-    <!-- <button onclick="loginWithTwitter()">Login with Twitter (TEST)</button> -->
+    <h1>Boost your score !</h1>
+    <button id="speedButton">x10 Speed<span class="new-line">24h - 0.05 $TON</span></button>
+    <button id="fatFarmerButton">Fat Farmer<span class="new-line">24h - 0.05 $TON</span></button>
     <button class="go-back-button" onclick="window.location.href='index.html'">Go back to catch!</button>
-
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="common.js"></script>
 
     <script>
-        let telegramID = "0";
+        let telegramID = "Guest";
         let score = 0;
         let speedBoost = 1;
+        let speedBoostMax = 5;
         let fatBoost = 1;
+        let fatBoostMax = 2;
         let tg = 0;
         let twitter = 0;
         let site = 0;
-
 // Fonction pour envoyer l'ID Telegram au backend via AJAX
 function getData(telegramID,callback) {
     var xhr = new XMLHttpRequest();
@@ -137,9 +117,8 @@ function getData(telegramID,callback) {
                     site=response.site;
                     document.getElementById('score').textContent = score;
                     document.getElementById('username').textContent = telegramID;
-                    if (tg == 1) { document.getElementById('joinCommunityLink').style.backgroundColor = '#45a049'; }
-                    if (twitter == 1) { document.getElementById('joinXLink').style.backgroundColor = '#45a049'; }
-                    if (site == 1) { document.getElementById('visitSiteLink').style.backgroundColor = '#45a049'; }
+                    if (speedBoost == speedBoostMax) { document.getElementById('speedButton').style.backgroundColor = '#45a049'; }
+                    if (fatBoost == fatBoostMax) { document.getElementById('fatFarmerButton').style.backgroundColor = '#45a049'; }
                     alert (score +' '+speedBoost+' '+fetchedfatBoost+' '+telegram+' '+twitter+' '+site);
             } else {
                 console.log("Erreur: " + response.message);
@@ -181,76 +160,30 @@ function setData() {
     "&site=" + encodeURIComponent(site)
 );
 }
-
-  document.addEventListener('DOMContentLoaded', function(){
+        document.addEventListener('DOMContentLoaded', function(){
             if (typeof Telegram !== 'undefined' && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
                 var user = Telegram.WebApp.initDataUnsafe.user;
                 if (user) {
                     telegramID = user.username ? user.username : user.id;
-                    getData(telegramID) 
+                    getData(telegramID);
+                    }
 
-                       
-
-                } //else {
-                    //telegramID = 'Guest';
-                    //score = 0;
-                    //document.getElementById('username').textContent = telegramID;
-               // }
             } else {
                 document.getElementById("username").textContent = "API Telegram Web App non disponible.";
             }
         });
 
-         function joinCommunity() {
-             if (tg == 0) {
-            // Change the color of the link
-            document.getElementById('joinCommunityLink').style.backgroundColor = '#45a049';
-            // Add 1000 to the score
-            score += 1000;
-            document.getElementById('score').textContent = score;
-            // Update the score in the database
-            tg = 1;
+        document.getElementById('speedButton').addEventListener('click', () => {
+            speedBoost = speedBoostMax;
+            document.getElementById('speedButton').style.backgroundColor = '#45a049';
             setData();
-            // Open the link
-             Telegram.WebApp.openLink('https://t.me/duckfarmerchannel');
-             }
-        }
-        
-          function joinX() {
-             if (twitter == 0) {
-            // Change the color of the link
-            document.getElementById('joinXLink').style.backgroundColor = '#45a049';
-            // Add 1000 to the score
-            score += 1000;
-            document.getElementById('score').textContent = score;
-            // Update the score in the database
-            twitter=1;
+        });
+
+        document.getElementById('fatFarmerButton').addEventListener('click', () => {
+            fatBoost = fatBoostMax;
+            document.getElementById('fatFarmerButton').style.backgroundColor = '#45a049';
             setData();
-            // Open the link
-            Telegram.WebApp.openLink('https://x.com/DuckFarmerCoin');
-             }
-        }
-        
-           function visitSite() {
-             if (site == 0) {
-            // Change the color of the link
-            document.getElementById('visitSiteLink').style.backgroundColor = '#45a049';
-            // Add 1000 to the score
-            score += 1000;
-            document.getElementById('score').textContent = score;
-            // Update the score in the database
-            site=1;
-            setData();
-            // Open the link
-            Telegram.WebApp.openLink('https://duckfarmer.xyz');
-             }
-        }
-        
-        
-        function loginWithTwitter() {
-            // Replace 'YOUR_TWITTER_AUTH_URL' with the actual URL to start Twitter OAuth process
-            window.location.href = 'YOUR_TWITTER_AUTH_URL';
-        }
+        });
     </script>
 </body>
 </html>
