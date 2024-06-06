@@ -10,54 +10,31 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-
-# Fonction de démarrage pour la commande /start
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    user_id = update.message.from_user.id
+# Fonction pour générer le message d'invitation avec le lien de parrainage
+def generate_invite_message(user_id):
     referral_link = f"https://t.me/DuckFarmerBot/DuckFarmerApp?startapp={user_id}"
-    invite_message = "\n Hey! Join DuckFarmer play to Airdrop App with my referral link:\n\n🚀🐤 "+ referral_link+" 🧑‍🌾🚀"
+    invite_message = "\n Hey! Join DuckFarmer play to Airdrop App with my referral link:\n🚀🐤 "+ referral_link+" 🧑‍🌾🚀"
+    return invite_message
+
+# Fonction pour gérer les commandes /start et /help
+async def start_or_help(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    user_id = update.message.from_user.id
+    invite_message = generate_invite_message(user_id)
+
     keyboard = [
-        [
-            InlineKeyboardButton("Play", url=f"https://t.me/DuckFarmerBot/DuckFarmerApp"),
-            InlineKeyboardButton("Join Community", url="t.me/duckfarmerchannel"),
-        ],
+        [InlineKeyboardButton("Invite Friends", switch_inline_query=invite_message)],
         [
             InlineKeyboardButton("Website", url="duckfarmer.xyz"),
+            InlineKeyboardButton("Join Community", url="t.me/duckfarmerchannel"),
             InlineKeyboardButton("Page X", url="https://x.com/DuckFarmerCoin")
         ],
-           [InlineKeyboardButton("Forward to Friends", switch_inline_query=invite_message)]
+        [ InlineKeyboardButton("Play", url=f"https://t.me/DuckFarmerBot/DuckFarmerApp")]
     ]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
     await update.message.reply_text(
-            'Welcome! Use the buttons below :',
-            reply_markup=reply_markup
-        )
-
-# Fonction de démarrage pour la commande /help
-async def help(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    user_id = update.message.from_user.id
-    referral_link = f"https://t.me/DuckFarmerBot/DuckFarmerApp?startapp={user_id}"
-    invite_message = "\n Hey! Join DuckFarmer play to Airdrop App with my referral link:\n\n🚀🐤 "+ referral_link+" 🧑‍🌾🚀"
-
-
-    keyboard = [
-        [
-            InlineKeyboardButton("Play", url=f"https://t.me/DuckFarmerBot/DuckFarmerApp"),
-            InlineKeyboardButton("Join Community", url="t.me/duckfarmerchannel"),
-        ],
-        [
-            InlineKeyboardButton("Website", url="duckfarmer.xyz"),
-            InlineKeyboardButton("Page X", url="https://x.com/DuckFarmerCoin")
-        ],
-           [InlineKeyboardButton("Forward to Friends", switch_inline_query=invite_message)]
-    ]
-
-    reply_markup = InlineKeyboardMarkup(keyboard)
-
-    await update.message.reply_text(
-        'Hy! Use the buttons below :',
+        'Welcome! Use the buttons below :',
         reply_markup=reply_markup
     )
 
@@ -65,8 +42,8 @@ def main() -> None:
     # Initialiser l'application avec le jeton API
     application = Application.builder().token(TELEGRAM_BOT_API_TOKEN).build()
 
-    application.add_handler(CommandHandler("start", start))
-    application.add_handler(CommandHandler("help", help))
+    application.add_handler(CommandHandler("start", start_or_help))
+    application.add_handler(CommandHandler("help", start_or_help))
 
     # Démarrer le bot
     application.run_polling()
