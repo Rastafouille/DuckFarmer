@@ -1,0 +1,7 @@
+{
+    "url": "orange-frog-982231.hostingersite.com/app",                        // required
+    "name": "duckduck",                      // required
+    "iconUrl": "orange-frog-982231.hostingersite.com/app/assets/dollar.png",               // required
+    //"termsOfUseUrl": "<terms-of-use-url>",     // optional
+    //"privacyPolicyUrl": "<privacy-policy-url>" // optional
+}

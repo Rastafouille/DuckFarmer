@@ -11,15 +11,16 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Fonction pour générer le message d'invitation avec le lien de parrainage
-def generate_invite_message(user_id):
-    referral_link = f"https://t.me/DuckFarmerBot/DuckFarmerApp?startapp={user_id}"
+def generate_invite_message(username):
+    referral_link = f"https://t.me/DuckFarmerBot/DuckFarmerApp?startapp={username}"
     invite_message = "\n Hey! Join DuckFarmer play to Airdrop App with my referral link:\n🚀🐤 "+ referral_link+" 🧑‍🌾🚀"
     return invite_message
 
 # Fonction pour gérer les commandes /start et /help
 async def start_or_help(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    user_id = update.message.from_user.id
-    invite_message = generate_invite_message(user_id)
+    user = update.message.from_user
+    username = user.username if user.username else str(user.id)
+    invite_message = generate_invite_message(username)
 
     keyboard = [
         [InlineKeyboardButton("Invite Friends", switch_inline_query=invite_message)],
