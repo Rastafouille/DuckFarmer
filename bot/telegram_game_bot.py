@@ -10,13 +10,13 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Fonction pour générer le message d'invitation avec le lien de parrainage
+# Fonction pour gÃ©nÃ©rer le message d'invitation avec le lien de parrainage
 def generate_invite_message(username):
     referral_link = f"https://t.me/DuckFarmerBot/DuckFarmerApp?startapp={username}"
-    invite_message = "\n Hey! Join DuckFarmer play to Airdrop App with my referral link:\n🚀🐤 "+ referral_link+" 🧑‍🌾🚀"
+    invite_message = "\n Hey! Join DuckFarmer play to Airdrop App with my referral link:\nðŸš€ðŸ¤ "+ referral_link+" ðŸ§‘â€ðŸŒ¾ðŸš€"
     return invite_message
 
-# Fonction pour gérer les commandes /start et /help
+# Fonction pour gÃ©rer les commandes /start et /help
 async def start_or_help(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user = update.message.from_user
     username = user.username if user.username else str(user.id)
@@ -27,7 +27,7 @@ async def start_or_help(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         [
             InlineKeyboardButton("Website", url="duckfarmer.xyz"),
             InlineKeyboardButton("Join Community", url="t.me/duckfarmerchannel"),
-            InlineKeyboardButton("Page X", url="https://x.com/DuckFarmerCoin")
+            InlineKeyboardButton("Page X", url="https://x.com/DuckFarmerGame")
         ],
         [ InlineKeyboardButton("Play", url=f"https://t.me/DuckFarmerBot/DuckFarmerApp")]
     ]
@@ -46,7 +46,7 @@ def main() -> None:
     application.add_handler(CommandHandler("start", start_or_help))
     application.add_handler(CommandHandler("help", start_or_help))
 
-    # Démarrer le bot
+    # DÃ©marrer le bot
     application.run_polling()
 
 if __name__ == '__main__':
