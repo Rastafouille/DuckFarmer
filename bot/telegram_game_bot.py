@@ -22,6 +22,8 @@ def draw_img(farmer_name,score, player_number, rank, p1, p2, p3):
 
     # Load the font
     font_path = 'Minecraft.ttf'  # Assurez-vous que ce chemin est correct
+    #font_path = '/home/user/DuckFarmer/bot/Minecraft.ttf'  
+
     font_size = 70  # Ajustez la taille de la police si nécessaire
     font = ImageFont.truetype(font_path, font_size)
     # Initialize ImageDraw
