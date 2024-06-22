@@ -15,8 +15,8 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 def draw_img(farmer_name,score, player_number, rank, p1, p2, p3):
-    #image_path = 'stats.png'
     image_path = 'stats.png'
+    #image_path = '/home/user/DuckFarmer/bot/stats.png'
 
     image = Image.open(image_path)
 
