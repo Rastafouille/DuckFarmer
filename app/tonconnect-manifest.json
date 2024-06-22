@@ -1,7 +1,7 @@
 {
-    "url": "orange-frog-982231.hostingersite.com/app",                        // required
-    "name": "duckduck",                      // required
-    "iconUrl": "orange-frog-982231.hostingersite.com/app/assets/dollar.png",               // required
-    //"termsOfUseUrl": "<terms-of-use-url>",     // optional
-    //"privacyPolicyUrl": "<privacy-policy-url>" // optional
+    "url": "https://t.me/DuckFarmerBot/DuckFarmerApp",                       
+    "name": "DuckFarmer",                    
+    "iconUrl": "https://orange-frog-982231.hostingersite.com/app/assets/coin_petit.png",
+    "termsOfUseUrl": "https://orange-frog-982231.hostingersite.com/app/termsofuse.html",   
+    "privacyPolicyUrl": "https://orange-frog-982231.hostingersite.com/app/privacypolicy.html"
 }

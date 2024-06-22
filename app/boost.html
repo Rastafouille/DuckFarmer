@@ -34,7 +34,7 @@
             transform: translateX(-50%);
             color: white;
             font-family: 'Minecraft', Arial, sans-serif;
-            font-size: 36px;
+            font-size: 25px;
             text-align: center;
         }
         .score-board .score-line {
@@ -46,7 +46,7 @@
             margin-left: 10px;
         }
         button {
-            padding: 10px 20px;
+            padding: 5px 10px;
             font-size: 24px;
             margin-bottom: 10px;
             background-color: #ee3608;
@@ -58,50 +58,242 @@
             text-decoration: none;
             transition: background-color 0.3s;
             font-family: 'Minecraft', Arial, sans-serif;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        button span {
+            position: relative;
+            z-index: 1;
+        }
+        button .new-line {
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            background-color: #ee3608;
+            transition: width 0.1s;
+            z-index: 0;
         }
         .go-back-button {
             position: absolute;
             bottom: 20px;
             background-color: #45a049;
         }
+         .wallet-button {
+            background-color: #007BFF;
+            color: white;
+        }
+        .wallet-button img {
+            margin-left: 10px;
+        }
+
         h1 {
-            font-size: 36px;
+            font-size: 40px;
             color: white;
             text-decoration: underline;
         }
         span.new-line {
             display: block;
-            font-size: 12px;
+            font-size: 16px;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .user-info img {
+            margin-left: 5px;
+        }
+        .help-button {
+            padding: 5px 10px;
+            font-size: 18px;
+            margin-left: 10px;
+            background-color: #45a049;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            font-family: 'Minecraft', Arial, sans-serif;
+        }
+        .help-window {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            color: black;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            z-index: 1000;
+        }
+        .help-window p {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+        .help-window img {
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+        .help-window .button-container {
+            display: flex;
+            justify-content: center;
+        }
+        .help-window .button-container button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #45a049;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Minecraft', Arial, sans-serif;
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
     <div class="score-board">
-        <div><span id="username">Guest</span></div>
-        <div class="score-line">Score&nbsp;<span id="score">0</span>
-            <img src="assets/duck.png" alt="Duck Icon" width="36" height="36">
+        <div class="user-info">
+            <span id="username">Guest</span>
+            <img src="assets/Animate_Duck.gif" alt="Duck Icon" width="35" height="35">
+        </div>
+        <div class="score-line">
+            Score&nbsp;<span id="score">0</span>
+            <img src="assets/coin_petit.png" alt="Coin Icon" width="20" height="20">
         </div>
     </div>
+
     <h1>Boost your score !</h1>
-    <button id="speedButton">x10 Speed<span class="new-line">24h - 0.05 $TON</span></button>
-    <button id="fatFarmerButton">Fat Farmer<span class="new-line">24h - 0.05 $TON</span></button>
-    <button class="go-back-button" onclick="window.location.href='index.html'">Go back to catch!</button>
+    
+    <div style="margin-bottom: 30px;"></div> <!-- Ajoute un espace vertical -->
+
+    <button id="speedButton">
+        <span>x5 Speed 1h</span><span class="new-line">- 1000 <img src="assets/coin_petit.png" alt="Coin Icon" width="20" height="20"></span>
+        <span class="progress-bar" id="speedProgressBar"></span>
+    </button>
+    
+    <button id="speedButton24h">
+        <span>x5 Speed 24h</span><span class="new-line">- 0.02 <img src="assets/ton.png" alt="TON Icon" width="20" height="20"></span>
+        <span class="progress-bar" id="speedProgressBar24h"></span>
+    </button>
+    
+    <div style="margin-bottom: 20px;"></div> <!-- Ajoute un espace vertical -->
+
+    <button id="fatFarmerButton">
+        <span>Fat Farmer 1h</span><span class="new-line">- 1000 <img src="assets/coin_petit.png" alt="Coin Icon" width="20" height="20"></span>
+        <span class="progress-bar" id="fatProgressBar"></span>
+    </button>
+    
+    <button id="fatFarmerButton24h">
+        <span>Fat Farmer 24h</span><span class="new-line">- 0.02 <img src="assets/ton.png" alt="TON Icon" width="20" height="20"></span>
+        <span class="progress-bar" id="fatProgressBar24h"></span>
+    </button>
+    
+    <div style="margin-bottom: 30px;"></div> <!-- Ajoute un espace vertical -->
+
+    <div id="ton-connect"></div>
+    
+   <button class="wallet-button" id="walletButton">
+        <span>disconnect</span>
+        <img src="assets/ton.png" alt="TON Icon" width="20" height="20">
+    </button>
+    
+    <button class="go-back-button" onclick="window.location.href='index.php'">Go back to catch!</button>
+    
+    <div class="help-window" id="helpWindow">
+        <p>Connect wallet first</p>
+        <img src="assets/ton.png" alt="TON Icon" width="40" height="40">
+        <div class="button-container">
+            <button onclick="toggleHelp()">Close</button>
+        </div>
+    </div>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="common.js"></script>
+    <!--<script src="//cdn.jsdelivr.net/npm/eruda"></script>
+    <script>eruda.init()</script>-->
+    
+    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+    <script src="https://unpkg.com/@tonconnect/sdk@latest/dist/tonconnect-sdk.min.js"></script>
 
     <script>
-        let telegramID = "Guest";
+    
+        const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+                manifestUrl: 'https://orange-frog-982231.hostingersite.com/app/tonconnect-manifest.json',
+                buttonRootId: 'ton-connect'
+            });
+        //tonConnectUI.uiOptions = {   twaReturnUrl: 'https://t.me/DuckFarmerBot/DuckFarmerApp'  };
+          
+    
+        let telegramID = 123;
+        let telegramUser ="Guest"
+        let telegramFirst ="Guest"
         let score = 0;
+        let speedDate = new Date('2024-01-01T12:00:00');
+        let speedDate24h = new Date('2024-01-01T12:00:00');
         let speedBoost = 1;
-        let speedBoostMax = 5;
-        let fatBoost = 1;
-        let fatBoostMax = 2;
+        let speedBoostMax = 2.5;
+        let fatDate = new Date('2024-01-01T12:00:00');
+        let fatDate24h = new Date('2024-01-01T12:00:00');
+        let fatBoostMax = 3;
+        let fatBoost=1;
         let tg = 0;
         let twitter = 0;
         let site = 0;
-// Fonction pour envoyer l'ID Telegram au backend via AJAX
-function getData(telegramID,callback) {
+        let parrainUsername = '';
+        let inviteCount=0;
+        let invite_count_n2=0;
+        let invite_count_n3=0;
+        let spare3=0;
+        
+        function toggleHelp() {
+            var helpWindow = document.getElementById("helpWindow");
+            if (helpWindow.style.display === "none" || helpWindow.style.display === "") {
+                helpWindow.style.display = "block";
+            } else {
+                helpWindow.style.display = "none";
+            }
+        }
+        
+        function updateProgressBar(button, progressBar, startDate,duration) {
+            const nowDate = new Date();
+            const elapsed = nowDate.getTime() - startDate.getTime();
+            //const duration = 1 * 60 * 60 * 1000; // 1 hour in milliseconds
+            const percentage = Math.min((elapsed / duration) * 100, 100);
+            progressBar.style.width = `${percentage}%`;
+            //alert(button+'' +percentage)
+        
+            if (percentage >= 100) {
+                button.style.backgroundColor = '#ee3608';
+                progressBar.style.width = '0%';
+            }
+        }
+        
+        function updateProgressBars() {
+            updateProgressBar( document.getElementById('speedButton'), document.getElementById('speedProgressBar'),speedDate,(1 * 60 * 60 * 1000));
+            updateProgressBar( document.getElementById('speedButton24h'), document.getElementById('speedProgressBar24h'),speedDate24h,(24 * 60 * 60 * 1000));
+
+            updateProgressBar(  document.getElementById('fatFarmerButton'), document.getElementById('fatProgressBar'), fatDate,(1 * 60 * 60 * 1000));
+            updateProgressBar(  document.getElementById('fatFarmerButton24h'), document.getElementById('fatProgressBar24h'), fatDate24h,(24 * 60 * 60 * 1000));
+        }
+        
+
+   // Fonction pour envoyer l'ID Telegram au backend via AJAX
+function getData() {
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "get_data.php", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -110,37 +302,58 @@ function getData(telegramID,callback) {
             var response = JSON.parse(xhr.responseText);
             if (response.status === 'success' || response.status === 'added') {
                     score = response.score;
-                    speedBoost=response.speed_boost;
-                    fatBoost=response.fat_boost;
+                    speedDate = new Date(response.speed_boost);
+                    speedDate24h = new Date(response.speed_boost_24h);
+                    fatDate = new Date(response.fat_boost);
+                    fatDate24h = new Date(response.fat_boost_24h);
                     tg=response.telegram;
                     twitter=response.twitter;
                     site=response.site;
-                    document.getElementById('score').textContent = score;
-                    document.getElementById('username').textContent = telegramID;
-                    if (speedBoost == speedBoostMax) { document.getElementById('speedButton').style.backgroundColor = '#45a049'; }
-                    if (fatBoost == fatBoostMax) { document.getElementById('fatFarmerButton').style.backgroundColor = '#45a049'; }
-                    alert (score +' '+speedBoost+' '+fetchedfatBoost+' '+telegram+' '+twitter+' '+site);
-            } else {
-                console.log("Erreur: " + response.message);
-                //callback(0, 1, 1, 0, 0, 0);
-           }
-        } else if (xhr.readyState == 4) {
-            console.log("Erreur lors de la requête AJAX: " + xhr.status);
-            //callback(0, 1, 1, 0, 0, 0);
-        }
-    };
-    xhr.send("telegramID=" + encodeURIComponent(telegramID));
-}
+                    parrainUsername=response.parrain_username;
+                    inviteCount=response.invite_count;
+                    invite_count_n2=response.invite_count_n2;
+                    invite_count_n3=response.invite_count_n3;
+                    spare3=response.spare3;
+                    
+                        document.getElementById('score').textContent = score;
+                        document.getElementById('username').textContent = telegramFirst;
+                        
+                        nowDate = new Date();
+                         if (nowDate.getTime() < (speedDate24h.getTime() + 24 * 60 * 60 * 1000)) {
+                            document.getElementById('speedButton24h').style.backgroundColor = '#45a049';
+                            speedBoost=speedBoostMax;
+                        }
+                        if (nowDate.getTime() < (speedDate.getTime() + 1 * 60 * 60 * 1000)) {
+                            document.getElementById('speedButton').style.backgroundColor = '#45a049';
+                            speedBoost=speedBoostMax;
+                        }
+                        if (nowDate.getTime() < (fatDate.getTime() + 1 * 60 * 60 * 1000)) {
+                            document.getElementById('fatFarmerButton').style.backgroundColor = '#45a049';
+                            fatBoost=fatBoostMax;
+                        }
+                          if (nowDate.getTime() < (fatDate24h.getTime() + 24 * 60 * 60 * 1000)) {
+                            document.getElementById('fatFarmerButton24h').style.backgroundColor = '#45a049';
+                            fatBoost=fatBoostMax;
+                        }
+                        
+                        //alert(score +' '+nowDate.getTime()+' '+fatDate.getTime()+' '+tg+' '+twitter+' '+site);
+                        //alert(speedBoost+' '+fatBoost);
+                        
+                } else {
+                    console.log("Erreur: " + response.message);
+               }
+            } else if (xhr.readyState == 4) {
+                console.log("Erreur lors de la requête AJAX: " + xhr.status);
+            }
+        };
+    xhr.send("telegramID=" + encodeURIComponent(telegramID) +
+            "&telegramUser=" + encodeURIComponent(telegramUser) +
+            "&telegramFirst=" + encodeURIComponent(telegramFirst) +
+            "&parrain_username=" + encodeURIComponent(parrainUsername) );
+    }
 
-// Fonction pour mettre à jour les données dans la base de données via AJAX
-function setData() {
-   // telegramID = telegramID || '';
-   // score = score || 0;
-    //speedBoost = speedBoost || 1;
-    //fatBoost = fatBoost || 1;
-   // tg = tg || '0';
-   // twitter = twitter || '0';
-   // site = site || '0';
+   function setData() {
+
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "set_data.php", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -152,38 +365,160 @@ function setData() {
     };
     xhr.send(
     "telegramID=" + encodeURIComponent(telegramID) + 
+    "&telegramUser=" + encodeURIComponent(telegramUser) +
+    "&telegramFirst=" + encodeURIComponent(telegramFirst) +
     "&score=" + encodeURIComponent(score) + 
-    "&speedBoost=" + encodeURIComponent(speedBoost) + 
-    "&fatBoost=" + encodeURIComponent(fatBoost) + 
+    "&speedBoost=" + encodeURIComponent(speedDate.toISOString()) + 
+    "&speedBoost24h=" + encodeURIComponent(speedDate24h.toISOString()) + 
+    "&fatBoost=" + encodeURIComponent(fatDate.toISOString()) + 
+    "&fatBoost24h=" + encodeURIComponent(fatDate24h.toISOString()) + 
     "&tg=" + encodeURIComponent(tg) + 
     "&twitter=" + encodeURIComponent(twitter) + 
-    "&site=" + encodeURIComponent(site)
+    "&site=" + encodeURIComponent(site) +
+    "&parrain_username=" + encodeURIComponent(parrainUsername) +
+    "&invite_count=" + encodeURIComponent(inviteCount) +
+    "&invite_count_n2=" + encodeURIComponent(invite_count_n2) +
+    "&invite_count_n3=" + encodeURIComponent(invite_count_n3) +
+    "&spare3=" + encodeURIComponent(spare3)
 );
+ //alert ('setdata'+score +' '+speedBoost+' '+fatBoost+' '+tg+' '+twitter+' '+site+' '+parrainUsername+' '+inviteCount+' '+invite_count_n2+' '+invite_count_n3+' '+spare3);
 }
-        document.addEventListener('DOMContentLoaded', function(){
+
+
+
+//https://docs.ton.org/develop/dapps/ton-connect/web
+//https://ton-connect.github.io/sdk/modules/_tonconnect_ui.html
+
+        async function sendTransaction() {
+             
+            const transaction = {
+            validUntil: Math.floor(Date.now() / 1000) + 360, // 360 sec
+            messages: [
+                {
+                    //address: "UQD-3pOdgJQXRH6J6gTcs0ek8REtTdG8SXFYQH95-XmjVE75", //tonwallet rastafouille
+                    address: "UQBG43mn0ydW7KmevoY38zjSoKbtxDL4oQ4drX83lF5RVYTF", //tonspace rastafouille
+                  // address: "UQAs1sDFHYR6NA6-Fa3aAKF92_FyduGvkRIn-CTHykk4YRtQ", //tonspace duckfarmer
+                    //address: "UQBkZt_9d7xiARGLbwKGnGoNPJthTkCHVrQvP14GLbM2mED_", //tonkeeper duckfarmer
+                    amount: "20000000"
+                 // stateInit: "base64bocblahblahblah==" // just for instance. Replace with your transaction initState or remove
+                }
+            ]
+        }
+        try {
+            const result = await tonConnectUI.sendTransaction(transaction);
+            // you can use signed boc to find the transaction 
+            const someTxData = await myAppExplorerService.getTransaction(result.boc);
+            //alert('Transaction was sent successfully', someTxData);
+            console.log("Transaction sent. Result:", result);
+            console.log(result.boc);
+        } catch (e) {console.error(e);}
+    
+}
+                    
+       document.addEventListener('DOMContentLoaded', function(){
+           
             if (typeof Telegram !== 'undefined' && Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
                 var user = Telegram.WebApp.initDataUnsafe.user;
                 if (user) {
-                    telegramID = user.username ? user.username : user.id;
-                    getData(telegramID);
+                    telegramID = user.id;
+                    telegramUser = user.username ? user.username : user.id;
+                    telegramFirst = user.first_name;
+                    //alert ('telegram User: '+telegramUser + ', telegram ID: '+telegramID + ', telegram First: '+telegramFirst);
+                    getData();
+                    setInterval(updateProgressBars, 1000);
                     }
-
             } else {
                 document.getElementById("username").textContent = "API Telegram Web App non disponible.";
             }
+                        updateWalletButton();
+
         });
 
         document.getElementById('speedButton').addEventListener('click', () => {
-            speedBoost = speedBoostMax;
+            if (speedBoost==1 && score > 1000){
+            //if (score > 1000){
+            speedBoost=speedBoostMax;
+            score-=1000;
+            document.getElementById('score').textContent = score;
+            speedDate = new Date(Date.now())
             document.getElementById('speedButton').style.backgroundColor = '#45a049';
+            //alert ('speedDate.toISOString() ' +speedDate.toISOString());
+            setData();}
+        });
+        
+         document.getElementById('speedButton24h').addEventListener('click', async () => {
+            if (tonConnectUI.connected) {
+                const transaction = {
+                    validUntil: Math.floor(Date.now() / 1000) + 360, // 360 sec
+                    messages: [{
+                            //address: "UQD-3pOdgJQXRH6J6gTcs0ek8REtTdG8SXFYQH95-XmjVE75", //tonwallet rastafouille
+                           // address: "UQBG43mn0ydW7KmevoY38zjSoKbtxDL4oQ4drX83lF5RVYTF", //tonspace rastafouille
+                          //address: "UQAs1sDFHYR6NA6-Fa3aAKF92_FyduGvkRIn-CTHykk4YRtQ", //tonspace duckfarmer
+                            address: "UQBkZt_9d7xiARGLbwKGnGoNPJthTkCHVrQvP14GLbM2mED_", //tonkeeper duckfarmer
+                            amount: "20000000"
+                        }]
+                }
+                try {
+                    const result = await tonConnectUI.sendTransaction(transaction);
+                    console.log("Transaction sent. Result:", result);
+                    //alert("Transaction sent. Result:", result.boc);
+                    speedBoost=speedBoostMax;
+                    speedDate24h = new Date(Date.now())
+                    document.getElementById('speedButton24h').style.backgroundColor = '#45a049';
+                    setData();
+                } catch (e) {console.error(e); }
+            } else {toggleHelp();      }
+        });
+        
+        
+        document.getElementById('fatFarmerButton').addEventListener('click', () => {
+            if (fatBoost==1 && score > 1000){
+           // if (score > 1000){
+            fatBoost = fatBoostMax;
+            score-=1000;
+            document.getElementById('score').textContent = score;
+            fatDate=new Date(Date.now())
+            document.getElementById('fatFarmerButton').style.backgroundColor = '#45a049';
+            //alert ('fatDate.toISOString() ' +fatDate.toISOString());
             setData();
+            }
         });
 
-        document.getElementById('fatFarmerButton').addEventListener('click', () => {
-            fatBoost = fatBoostMax;
-            document.getElementById('fatFarmerButton').style.backgroundColor = '#45a049';
-            setData();
+        document.getElementById('fatFarmerButton24h').addEventListener('click', async () => {
+            if (tonConnectUI.connected) {
+                const transaction = {
+                    validUntil: Math.floor(Date.now() / 1000) + 360, // 360 sec
+                    messages: [{
+                            //address: "UQD-3pOdgJQXRH6J6gTcs0ek8REtTdG8SXFYQH95-XmjVE75", //tonwallet rastafouille
+                           // address: "UQBG43mn0ydW7KmevoY38zjSoKbtxDL4oQ4drX83lF5RVYTF", //tonspace rastafouille
+                          //address: "UQAs1sDFHYR6NA6-Fa3aAKF92_FyduGvkRIn-CTHykk4YRtQ", //tonspace duckfarmer
+                            address: "UQBkZt_9d7xiARGLbwKGnGoNPJthTkCHVrQvP14GLbM2mED_", //tonkeeper duckfarmer
+                            amount: "20000000"
+                        }]
+                }
+                try {
+                    const result = await tonConnectUI.sendTransaction(transaction);
+                    console.log("Transaction sent. Result:", result);
+                    //alert("Transaction sent. Result:", result.boc);
+                    fatBoost = fatBoostMax;
+                    fatDate24h = new Date(Date.now());
+                    document.getElementById('fatFarmerButton24h').style.backgroundColor = '#45a049';
+                    setData();
+
+                } catch (e) {console.error(e); }
+            } else {toggleHelp();      }
         });
+        
+        
+
+            async function updateWalletButton() {
+                if (tonConnectUI.connected) {
+                    walletButton.style.display = 'inline-block'; // ou 'block' selon votre mise en page
+                    walletButton.onclick = async () => {await tonConnectUI.disconnect();updateWalletButton();};
+                } else {walletButton.style.display = 'none';}
+            }
+            updateWalletButtonInterval=setInterval(updateWalletButton,parseInt(1000,10));
+            
     </script>
 </body>
 </html>
